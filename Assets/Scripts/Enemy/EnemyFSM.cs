@@ -36,7 +36,7 @@ public class EnemyFSM : MonoBehaviour
 
     private IEnumerator Attack()
     {
-        var wait = new WaitForSeconds(owner.Stats.cooldownTime);
+        var wait = new WaitForSeconds(owner.Stats.GetStat(StatType.CooldownTime).Value);
 
         while (true)
         {
@@ -45,7 +45,7 @@ public class EnemyFSM : MonoBehaviour
             Vector3 target = owner.Target.MiddlePoint;
             GameObject clone = Instantiate(projectilePrefab);
             clone.transform.position = projectileSpawnPoint.position;
-            clone.GetComponent<EnemyProjectile>().SetUp(target, owner.Stats.damage);
+            clone.GetComponent<EnemyProjectile>().SetUp(target, owner.Stats.GetStat(StatType.Damage).Value);
         }
     }
 }

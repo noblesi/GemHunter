@@ -14,7 +14,7 @@ public class EnemyBase : EntityBase
 
     protected override void SetUp()
     {
-        stats.maxHP = 100 + 50 * (stats.level - 1);
+        Stats.GetStat(StatType.HP).BonusValue = 50 * (Stats.level - 1);
 
         base.SetUp();
     }
