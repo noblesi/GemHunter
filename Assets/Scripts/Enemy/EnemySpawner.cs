@@ -9,6 +9,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private GameObject[] enemyPrefabs;
     [SerializeField]
+    private Transform parentTransform;
+    [SerializeField]
     private int enemyCount = 10;
 
     private Vector3 offset = new Vector3(0.5f, 0.5f, 0);
@@ -25,7 +27,8 @@ public class EnemySpawner : MonoBehaviour
             int type = Random.Range(0, enemyPrefabs.Length);
             int index = Random.Range(0, possibleTiles.Count);
 
-            Instantiate(enemyPrefabs[type], possibleTiles[index], Quaternion.identity, transform);
+            GameObject clone = Instantiate(enemyPrefabs[type], possibleTiles[index], Quaternion.identity, transform);
+            clone.GetComponent<EnemyBase>().Initialize(parentTransform);
         }
     }
 
