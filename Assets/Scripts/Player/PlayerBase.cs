@@ -2,10 +2,42 @@
 
 public class PlayerBase : EntityBase
 {
+    [SerializeField]
+    private FollowTarget targetMask;
+
     public bool IsMoved { get; set; } = false;
 
     private void Awake()
     {
         base.SetUp();
+    }
+
+    private void Update()
+    {
+        if (Target == null) targetMask.gameObject.SetActive(false);
+
+        SearchTarget();
+    }
+
+    private void SearchTarget()
+    {
+        float closestDistSqr = Mathf.Infinity;
+
+        foreach(var entity in EnemySpawner.Enemies)
+        {
+            float distance = (entity.transform.position - transform.position).sqrMagnitude;
+            if(distance < closestDistSqr)
+            {
+                closestDistSqr = distance;
+                Target = entity.GetComponent<EntityBase>();
+            }
+        }
+
+        if(Target != null)
+        {
+            targetMask.SetTarget(Target.transform);
+            targetMask.transform.position = Target.transform.position;
+            targetMask.gameObject.SetActive(true);
+        }
     }
 }

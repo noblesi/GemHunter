@@ -18,6 +18,8 @@ public class EnemySpawner : MonoBehaviour
     private Vector3 offset = new Vector3(0.5f, 0.5f, 0);
     private List<Vector3> possibleTiles = new List<Vector3>();
 
+    public static List<EntityBase> Enemies { get; private set; } = new List<EntityBase>();
+
     private void Awake()
     {
         tilemap.CompressBounds();
@@ -32,6 +34,8 @@ public class EnemySpawner : MonoBehaviour
             GameObject clone = Instantiate(enemyPrefabs[type], possibleTiles[index], Quaternion.identity, transform);
             clone.GetComponent<EnemyBase>().Initialize(parentTransform);
             clone.GetComponent<EnemyFSM>().SetUp(target);
+
+            Enemies.Add(clone.GetComponent<EnemyBase>());
         }
     }
 
