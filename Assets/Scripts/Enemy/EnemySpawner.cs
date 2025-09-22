@@ -11,6 +11,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private Transform parentTransform;
     [SerializeField]
+    private EntityBase target;
+    [SerializeField]
     private int enemyCount = 10;
 
     private Vector3 offset = new Vector3(0.5f, 0.5f, 0);
@@ -29,6 +31,7 @@ public class EnemySpawner : MonoBehaviour
 
             GameObject clone = Instantiate(enemyPrefabs[type], possibleTiles[index], Quaternion.identity, transform);
             clone.GetComponent<EnemyBase>().Initialize(parentTransform);
+            clone.GetComponent<EnemyFSM>().SetUp(target);
         }
     }
 
