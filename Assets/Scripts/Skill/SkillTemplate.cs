@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public enum SkillType { Buff = 0, }
+public enum SkillType { Buff = 0, Emission, }
 public enum SkillElement { None = -1, Ice = 100, Fire, Wind, Light, Dark, Count = 5 }
 
 [CreateAssetMenu(fileName = "NewSkill", menuName = "SkillAsset", order = 0)]
@@ -20,4 +20,9 @@ public class SkillTemplate : ScriptableObject
 
     [Header("버프 스킬")]
     public List<Stat> buffStatList;
+
+    [Header("공격 스킬")]
+    public List<Stat> attackBaseStats;
+    public List<Stat> attackBuffStats;
+    public GameObject projectile;
 }

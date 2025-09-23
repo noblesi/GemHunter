@@ -23,8 +23,9 @@ public class SkillSystem : MonoBehaviour
         {
             SkillBase skill = null;
             if (item.Value.skillType.Equals(SkillType.Buff)) skill = new SkillBuff();
+            else if(item.Value.skillType.Equals(SkillType.Emission)) skill = new SkillEmission();
 
-            skill.SetUp(item.Value, owner);
+                skill.SetUp(item.Value, owner, skillSpawnPoint);
             skills.Add(item.Key, skill);
 
             Logger.Log($"[{skill.SkillName}] Lv. {skill.CurrentLevel}\n{skill.Description}");
@@ -35,9 +36,21 @@ public class SkillSystem : MonoBehaviour
     {
         if (UnityEngine.InputSystem.Keyboard.current.digit1Key.wasPressedThisFrame) SelectSkill();
 
+        foreach(var item in skills)
+        {
+            if (item.Value.CurrentLevel == 0) continue;
+
+            item.Value.OnSkill();
+        }
+
         if (owner.Target == null || owner.IsMoved == true) return;
 
         skillGad.OnSkill();
+
+        foreach(var item in skills)
+        {
+            item.Value.IsSkillAvailable();
+        }
     }
 
     public void LevelUp(SkillBase skill)

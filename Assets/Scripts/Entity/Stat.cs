@@ -19,7 +19,18 @@ public class Stat
     [SerializeField]
     private float bonusValue;
 
+    public void CopyData(Stat newStat)
+    {
+        statType = newStat.statType;
+        maxValue = newStat.maxValue;
+        minValue = newStat.minValue;
+        defaultValue = newStat.defaultValue;
+        bonusValue = newStat.bonusValue;
+    }
+
     public StatType StatType => statType;
+    public float MaxValue => maxValue;
+    public float MinValue => minValue;
     public float Value => Mathf.Clamp(defaultValue + bonusValue, minValue, maxValue);
 
     public float DefaultValue
