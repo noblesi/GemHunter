@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public enum DestroyType { None = -1, Collision = 0, }
-
+public enum AttackType { Single, Multiple }
 public class ProjectileCollision2D : MonoBehaviour
 {
     [SerializeField]
@@ -10,6 +10,8 @@ public class ProjectileCollision2D : MonoBehaviour
     private UIDamageText damageText;
     [SerializeField]
     private DestroyType destroyType = DestroyType.None;
+    [SerializeField]
+    private AttackType attackType = AttackType.Single;
     [SerializeField]
     private bool isIgnoreWall = false;
 
@@ -33,8 +35,8 @@ public class ProjectileCollision2D : MonoBehaviour
         else if(collision.CompareTag("Enemy") &&
             collision.TryGetComponent<EntityBase>(out var entity))
         {
-            if (entity != target) return;
-            
+            if (attackType == AttackType.Single && entity != target) return;
+
             if(hitEffect != null)
             {
                 Instantiate(hitEffect, collision.transform.position, Quaternion.identity);
