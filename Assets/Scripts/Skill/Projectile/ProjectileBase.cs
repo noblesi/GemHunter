@@ -14,6 +14,11 @@ public abstract class ProjectileBase : MonoBehaviour
         GetComponent<ProjectileCollision2D>().SetUp(target, damage);
     }
 
+    public virtual void SetUp(EntityBase target, float damage, int maxCount, int index)
+    {
+        SetUp(target, damage);
+    }
+
     private void Update()
     {
         Process();

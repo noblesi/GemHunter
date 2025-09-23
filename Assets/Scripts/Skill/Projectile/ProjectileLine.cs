@@ -20,5 +20,8 @@ public class ProjectileLine : ProjectileBase
 
         currentTime -= Time.deltaTime / duration;
         lineRenderer.startWidth = currentTime;
+        lineRenderer.endWidth = currentTime;
+
+        if (currentTime <= 0f) Destroy(gameObject);
     }
 }
