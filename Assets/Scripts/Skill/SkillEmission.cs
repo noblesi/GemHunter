@@ -26,6 +26,8 @@ public class SkillEmission : SkillBase
 
             if (projectile.TryGetComponent<ProjectileCubicHoming>(out var p))
                 p.SetUp(owner.Target, GetStat(StatType.Damage).Value, maxCount, currentProjectileCount);
+            else if (projectile.TryGetComponent<ProjectileQuadraticHoming>(out var p2))
+                p2.SetUp(owner.Target, GetStat(StatType.Damage).Value, maxCount, currentProjectileCount);
             else projectile.GetComponent<ProjectileBase>().SetUp(owner.Target, GetStat(StatType.Damage).Value);
 
             currentProjectileCount++;
