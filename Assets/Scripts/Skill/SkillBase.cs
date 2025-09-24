@@ -53,7 +53,7 @@ public abstract class SkillBase
 
     public void IsSkillAvailable()
     {
-        if (CurrentLevel == 0 || SkillType == SkillType.Buff) return;
+        if (CurrentLevel == 0 || SkillType == SkillType.Buff || SkillType == SkillType.Sustained) return;
 
         if(Time.time - currentCooldownTime > GetStat(StatType.CooldownTime).Value)
         {
