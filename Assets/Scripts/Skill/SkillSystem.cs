@@ -25,6 +25,7 @@ public class SkillSystem : MonoBehaviour
             if (item.Value.skillType.Equals(SkillType.Buff)) skill = new SkillBuff();
             else if (item.Value.skillType.Equals(SkillType.Emission)) skill = new SkillEmission();
             else if (item.Value.skillType.Equals(SkillType.Sustained)) skill = new SkillSustained();
+            else if (item.Value.skillType.Equals(SkillType.Global)) skill = new SkillGlobal();
 
                 skill.SetUp(item.Value, owner, skillSpawnPoint);
             skills.Add(item.Key, skill);

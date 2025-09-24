@@ -16,6 +16,7 @@ public abstract class SkillBase
     public string Description => skillTemplate.description;
     public int CurrentLevel => currentLevel;
     public bool IsMaxLevel => currentLevel == skillTemplate.maxLevel;
+    public PlayerBase Owner => owner;
 
     private Stat[] stats;
     public Stat GetStat(Stat stat) => stats.FirstOrDefault(s => s.StatType == stat.StatType);
