@@ -4,12 +4,23 @@ public class PlayerBase : EntityBase
 {
     [SerializeField]
     private FollowTarget targetMask;
+    [SerializeField]
+    private LevelData levelData;
+    [SerializeField]
+    private SkillSystem skillSystem;
+
+    private float expAmount = 2f;
 
     public bool IsMoved { get; set; } = false;
+    public float AccumulationExp { get; set; } = 0f;
 
     private void Awake()
     {
         base.SetUp();
+
+        Stats.CurrentExp.DefaultValue = 0f;
+        Stats.CurrentExp.OnValueChanged += IsLevelUP;
+        Stats.GetStat(StatType.Experience).DefaultValue = levelData.MaxExperience[0];
     }
 
     private void Update()
@@ -18,6 +29,12 @@ public class PlayerBase : EntityBase
 
         SearchTarget();
         Recovery();
+        UpdateEXP();
+    }
+
+    protected override void OnDie()
+    {
+        Logger.Log("플레이어 사망 처리");
     }
 
     private void SearchTarget()
@@ -49,5 +66,30 @@ public class PlayerBase : EntityBase
         else
             Stats.CurrentHP.DefaultValue = Stats.GetStat(StatType.HP).Value;
         
+    }
+
+    private void UpdateEXP()
+    {
+        if (Mathf.Approximately(AccumulationExp, 0f) || skillSystem.IsSelectSkill == true) return;
+
+        float getEXP = AccumulationExp > expAmount ? expAmount : AccumulationExp;
+        AccumulationExp -= getEXP;
+        Stats.CurrentExp.DefaultValue += getEXP;
+    }
+
+    private void IsLevelUP(Stat stat, float prev, float current)
+    {
+        if (!Mathf.Approximately(Stats.CurrentExp.Value, Stats.GetStat(StatType.Experience).Value)) return;
+
+        Stats.GetStat(StatType.Level).DefaultValue++;
+
+        Stats.CurrentExp.DefaultValue -= Stats.GetStat(StatType.Experience).Value;
+
+        if (Stats.GetStat(StatType.Level).Value < levelData.MaxExperience.Length)
+            Stats.GetStat(StatType.Experience).DefaultValue = levelData.MaxExperience[(int)Stats.GetStat(StatType.Level).Value - 1];
+        else
+            Stats.GetStat(StatType.Experience).DefaultValue = levelData.MaxExperience[levelData.MaxExperience.Length - 1];
+
+        skillSystem.StartSelectSkill();
     }
 }

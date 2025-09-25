@@ -32,7 +32,7 @@ public class EnemySpawner : MonoBehaviour
             int index = Random.Range(0, possibleTiles.Count);
 
             GameObject clone = Instantiate(enemyPrefabs[type], possibleTiles[index], Quaternion.identity, transform);
-            clone.GetComponent<EnemyBase>().Initialize(parentTransform);
+            clone.GetComponent<EnemyBase>().Initialize(this, parentTransform);
             clone.GetComponent<EnemyFSM>().SetUp(target);
 
             Enemies.Add(clone.GetComponent<EnemyBase>());
@@ -60,5 +60,11 @@ public class EnemySpawner : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void Deactivate(EntityBase enemy)
+    {
+        Enemies.Remove(enemy);
+        Destroy(enemy.gameObject);
     }
 }

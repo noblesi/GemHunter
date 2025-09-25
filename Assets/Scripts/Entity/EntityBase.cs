@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class EntityBase : MonoBehaviour
+public abstract class EntityBase : MonoBehaviour
 {
     [SerializeField]
     private EntityStats stats;
@@ -27,7 +27,9 @@ public class EntityBase : MonoBehaviour
 
         if(Mathf.Approximately(Stats.CurrentHP.DefaultValue, 0f))
         {
-            // 사망 처리
+            OnDie();
         }
     }
+
+    protected abstract void OnDie();
 }

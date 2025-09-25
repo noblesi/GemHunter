@@ -21,6 +21,8 @@ public class SkillSystem : MonoBehaviour
     private Dictionary<SkillElement, int> elementalCounts = new Dictionary<SkillElement, int>();
     private Dictionary<SkillElement, SkillBase> elementalSkills = new Dictionary<SkillElement, SkillBase>();
 
+    public bool IsSelectSkill { get; private set; } = false;
+
     private void Awake()
     {
         owner = GetComponent<PlayerBase>();
@@ -98,6 +100,8 @@ public class SkillSystem : MonoBehaviour
 
     public void StartSelectSkill()
     {
+        IsSelectSkill = true;
+
         gameController.SetTimeScale(0);
 
         var randomSkills = GetRandomSkills(skills, 3);
@@ -115,6 +119,7 @@ public class SkillSystem : MonoBehaviour
         LevelUp(skill);
         uiSelectSkill.EndSelectSkillUI();
         gameController.SetTimeScale(1);
+        IsSelectSkill = false;
     }
 
     public List<SkillBase> GetRandomSkills(Dictionary<string, SkillBase> skills, int count = 3)
