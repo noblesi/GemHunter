@@ -8,6 +8,12 @@ public class SkillSystem : MonoBehaviour
     private SkillGad skillGad;
     [SerializeField]
     private Transform skillSpawnPoint;
+    [SerializeField]
+    private UISkillList uiSkillList;
+    [SerializeField]
+    private UISelectSkill uiSelectSkill;
+    [SerializeField]
+    private GameController gameController;
 
     private PlayerBase owner;
 
@@ -46,11 +52,13 @@ public class SkillSystem : MonoBehaviour
 
             Logger.Log($"{item.Value.element}, {item.Value.skillName}");
         }
+
+        uiSkillList.SetUp(skillDict, eSkillDict);
     }
 
     private void Update()
     {
-        if (UnityEngine.InputSystem.Keyboard.current.digit1Key.wasPressedThisFrame) SelectSkill();
+        if (UnityEngine.InputSystem.Keyboard.current.digit1Key.wasPressedThisFrame) StartSelectSkill();
 
         foreach(var item in skills)
         {
@@ -74,6 +82,7 @@ public class SkillSystem : MonoBehaviour
         if (skills.ContainsValue(skill))
         {
             skill.TryLevelUp();
+            uiSkillList.LevelUp(skill);
             Logger.Log($"Level Up [{skill.SkillName}] {skill.Element}, Lv. {skill.CurrentLevel}");
 
             elementalCounts[skill.Element]++;
@@ -81,13 +90,16 @@ public class SkillSystem : MonoBehaviour
             if(elementalCounts[skill.Element] % 3 == 0)
             {
                 elementalSkills[skill.Element].TryLevelUp();
+                uiSkillList.LevelUp(elementalSkills[skill.Element]);
                 Logger.Log($"{skill.Element} Lv. {elementalSkills[skill.Element].CurrentLevel}");
             }
         }
     }
 
-    public void SelectSkill()
+    public void StartSelectSkill()
     {
+        gameController.SetTimeScale(0);
+
         var randomSkills = GetRandomSkills(skills, 3);
         if(randomSkills == null)
         {
@@ -95,8 +107,14 @@ public class SkillSystem : MonoBehaviour
             return;
         }
 
-        int index = Random.Range(0, randomSkills.Count);
-        LevelUp(randomSkills[index]);
+        uiSelectSkill.StartSelectSkillUI(this, randomSkills.ToArray());
+    }
+
+    public void EndSelectSkill(SkillBase skill)
+    {
+        LevelUp(skill);
+        uiSelectSkill.EndSelectSkillUI();
+        gameController.SetTimeScale(1);
     }
 
     public List<SkillBase> GetRandomSkills(Dictionary<string, SkillBase> skills, int count = 3)
