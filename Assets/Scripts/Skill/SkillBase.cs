@@ -62,6 +62,14 @@ public abstract class SkillBase
         }
     }
 
+    protected float CalculateDamage()
+    {
+        float damage = GetStat(StatType.Damage).Value;
+        damage += damage * owner.Stats.GetStat((StatType)Element).Value;
+
+        return damage;
+    }
+
     public abstract void OnLevelUp();
     public abstract void OnSkill();
 }

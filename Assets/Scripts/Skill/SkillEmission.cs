@@ -25,10 +25,10 @@ public class SkillEmission : SkillBase
             GameObject projectile = GameObject.Instantiate(skillTemplate.projectile, spawnPoint.position, Quaternion.identity);
 
             if (projectile.TryGetComponent<ProjectileCubicHoming>(out var p))
-                p.SetUp(owner.Target, GetStat(StatType.Damage).Value, maxCount, currentProjectileCount);
+                p.SetUp(owner.Target, CalculateDamage(), maxCount, currentProjectileCount);
             else if (projectile.TryGetComponent<ProjectileQuadraticHoming>(out var p2))
-                p2.SetUp(owner.Target, GetStat(StatType.Damage).Value, maxCount, currentProjectileCount);
-            else projectile.GetComponent<ProjectileBase>().SetUp(owner.Target, GetStat(StatType.Damage).Value);
+                p2.SetUp(owner.Target, CalculateDamage(), maxCount, currentProjectileCount);
+            else projectile.GetComponent<ProjectileBase>().SetUp(owner.Target, CalculateDamage());
 
             currentProjectileCount++;
             currentAttackRate = Time.time;

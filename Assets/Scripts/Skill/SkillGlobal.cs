@@ -17,7 +17,7 @@ public class SkillGlobal : SkillBase
         if(isSkillAvailable == true)
         {
             GameObject projectile = GameObject.Instantiate(skillTemplate.projectile, spawnPoint.position, Quaternion.identity);
-            projectile.GetComponent<ProjectileGlobal>().SetUp(this, GetStat(StatType.Damage).Value);
+            projectile.GetComponent<ProjectileGlobal>().SetUp(this, CalculateDamage());
 
             isSkillAvailable = false;
             currentCooldownTime = Time.time;
