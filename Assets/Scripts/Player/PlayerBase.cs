@@ -13,6 +13,7 @@ public class PlayerBase : EntityBase
 
     public bool IsMoved { get; set; } = false;
     public float AccumulationExp { get; set; } = 0f;
+    public int GEM { get; private set; } = 0;
 
     private void Awake()
     {
@@ -91,5 +92,10 @@ public class PlayerBase : EntityBase
             Stats.GetStat(StatType.Experience).DefaultValue = levelData.MaxExperience[levelData.MaxExperience.Length - 1];
 
         skillSystem.StartSelectSkill();
+    }
+
+    public void AddGEM()
+    {
+        GEM++;
     }
 }

@@ -6,8 +6,11 @@ public class EnemyBase : EntityBase
     private Transform hudPoint;
     [SerializeField]
     private GameObject uiPrefab;
+    [SerializeField]
+    private int gemMin = 5, gemMax = 21;
 
     private EnemySpawner enemySpawner;
+    private GemCollector gemCollector;
 
     private void Awake()
     {
@@ -21,9 +24,10 @@ public class EnemyBase : EntityBase
         base.SetUp();
     }
 
-    public void Initialize(EnemySpawner enemySpawner, Transform parent)
+    public void Initialize(EnemySpawner enemySpawner, Transform parent, GemCollector gemCollector)
     {
         this.enemySpawner = enemySpawner;
+        this.gemCollector = gemCollector;
 
         GameObject clone = Instantiate(uiPrefab, parent);
         clone.transform.localScale = Vector3.one;
@@ -33,6 +37,8 @@ public class EnemyBase : EntityBase
 
     protected override void OnDie()
     {
+        gemCollector.SpawnGemEffect(transform.position, Random.Range(gemMin, gemMax));
+
         (Target as PlayerBase).AccumulationExp += Stats.CurrentExp.Value;
 
         enemySpawner.Deactivate(this);
