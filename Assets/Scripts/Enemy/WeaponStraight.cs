@@ -1,0 +1,10 @@
+﻿using UnityEngine;
+
+public class WeaponStraight : WeaponBase
+{
+    public override void OnAttack()
+    {
+        GameObject clone = GameObject.Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
+        clone.GetComponent<EnemyProjectile>().SetUp(owner.Target.MiddlePoint, damage);
+    }
+}

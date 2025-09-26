@@ -1,51 +1,32 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using Unity.Behavior;
 using UnityEngine;
-
-public enum EnemyState { None = -1, Attack, }
+using UnityEngine.AI;
 
 public class EnemyFSM : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject projectilePrefab;
-    [SerializeField]
-    private Transform projectileSpawnPoint;
-
     private EnemyBase owner;
-    private EnemyState enemyState;
+    private NavMeshAgent navMeshAgent;
+    private BehaviorGraphAgent behaviorAgent;
+    private WeaponBase currentWeapon;
 
     private void Awake()
     {
         owner = GetComponent<EnemyBase>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        behaviorAgent = GetComponent<BehaviorGraphAgent>();
+        currentWeapon = GetComponent<WeaponBase>();
 
-        ChangeState(EnemyState.Attack);
+        navMeshAgent.updateRotation = false;
+        navMeshAgent.updateUpAxis = false;
+        currentWeapon.SetUp(owner);
     }
 
-    public void SetUp(EntityBase target)
+    public void SetUp(EntityBase target, GameObject[] wayPoints)
     {
         owner.Target = target;
-    }
 
-    public void ChangeState(EnemyState newState)
-    {
-        StopCoroutine(enemyState.ToString());
-
-        enemyState = newState;
-
-        StartCoroutine(enemyState.ToString());
-    }
-
-    private IEnumerator Attack()
-    {
-        var wait = new WaitForSeconds(owner.Stats.GetStat(StatType.CooldownTime).Value);
-
-        while (true)
-        {
-            yield return wait;
-
-            Vector3 target = owner.Target.MiddlePoint;
-            GameObject clone = Instantiate(projectilePrefab);
-            clone.transform.position = projectileSpawnPoint.position;
-            clone.GetComponent<EnemyProjectile>().SetUp(target, owner.Stats.GetStat(StatType.Damage).Value);
-        }
+        behaviorAgent.SetVariableValue("PatrolPoints", wayPoints.ToList());
+        behaviorAgent.SetVariableValue("Target", target.gameObject);
     }
 }
