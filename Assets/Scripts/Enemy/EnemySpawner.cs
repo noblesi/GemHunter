@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]
     private Tilemap tilemap;
+    [SerializeField]
+    private GameObject enemySpawnTile;
     [SerializeField]
     private GameObject[] enemyPrefabs;
     [SerializeField]
@@ -19,6 +23,9 @@ public class EnemySpawner : MonoBehaviour
 
     private Vector3 offset = new Vector3(0.5f, 0.5f, 0);
     private List<Vector3> possibleTiles = new List<Vector3>();
+    private MemoryPool enemySpawnTilePool;
+    private WaitForSeconds waitTime = new WaitForSeconds(2.0f);
+    public static UnityEvent exitEvent = new UnityEvent();
 
     public static List<EntityBase> Enemies { get; private set; } = new List<EntityBase>();
 
@@ -32,21 +39,42 @@ public class EnemySpawner : MonoBehaviour
 
     private void Awake()
     {
+        enemySpawnTilePool = new MemoryPool(enemySpawnTile);
+
         tilemap.CompressBounds();
 
         CalculatePossibleTiles();
+    }
 
-        for(int i = 0; i< enemyCount; i++)
+    public void SpawnEnemys(int count)
+    {
+        Enemies.Clear();
+        StartCoroutine(nameof(Process), count);
+    }
+
+    private IEnumerator Process(int count)
+    {
+        Vector3[] positions = new Vector3[count];
+        for(int i = 0; i < count; ++i)
+        {
+            positions[i] = possibleTiles[Random.Range(0, possibleTiles.Count)];
+            enemySpawnTilePool.ActivatePoolItem(positions[i]);
+        }
+
+        yield return waitTime;
+
+        enemySpawnTilePool.DeactivateAllPollItems();
+
+        for(int i = 0; i < count; ++i)
         {
             int type = Random.Range(0, enemyPrefabs.Length);
-            int index = Random.Range(0, possibleTiles.Count);
             int wayIndex = Random.Range(0, wayPointData.Length);
 
-            GameObject clone = Instantiate(enemyPrefabs[type], possibleTiles[index], Quaternion.identity, transform);
+            GameObject clone = Instantiate(enemyPrefabs[type], positions[i], Quaternion.identity, transform);
             clone.GetComponent<EnemyBase>().Initialize(this, parentTransform, gemCollector);
             clone.GetComponent<EnemyFSM>().SetUp(target, wayPointData[wayIndex].wayPoints);
 
-            Enemies.Add(clone.GetComponent<EnemyBase>());
+            Enemies.Add(clone.GetComponent<EntityBase>());
         }
     }
 
@@ -77,5 +105,10 @@ public class EnemySpawner : MonoBehaviour
     {
         Enemies.Remove(enemy);
         Destroy(enemy.gameObject);
+
+        if(Enemies.Count == 0)
+        {
+            exitEvent?.Invoke();
+        }
     }
 }

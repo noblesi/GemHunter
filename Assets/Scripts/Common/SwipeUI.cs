@@ -121,5 +121,7 @@ public class SwipeUI : MonoBehaviour
 
             yield return null;
         }
+
+        isSwipeMode = false;
     }
 }
