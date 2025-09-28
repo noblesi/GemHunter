@@ -110,7 +110,7 @@ public class DBItem_Goods
     public float gem;
 
     public readonly int maxHeart = 50;
-    public readonly float hearRefillTime = 20 * 60;
+    public readonly float heartRefillTime = 20 * 60;
 
     public void Reset()
     {

@@ -9,6 +9,11 @@ public class IntroSceneController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI textPressAnyKey;
 
+    private void Awake()
+    {
+        Database.Read();
+    }
+
     private IEnumerator Start()
     {
         while (true)

@@ -3,6 +3,8 @@
 public class PlayerBase : EntityBase
 {
     [SerializeField]
+    private GameController gameController;
+    [SerializeField]
     private FollowTarget targetMask;
     [SerializeField]
     private LevelData levelData;
@@ -35,7 +37,7 @@ public class PlayerBase : EntityBase
 
     protected override void OnDie()
     {
-        Logger.Log("플레이어 사망 처리");
+        gameController.GameOver();
     }
 
     private void SearchTarget()
