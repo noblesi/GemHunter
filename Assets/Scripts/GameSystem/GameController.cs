@@ -78,7 +78,7 @@ public class GameController : MonoBehaviour
     {
         SetTimeScale(0);
 
-        long exp = (long)(currentStage * (5 + currentChapter + 1) * 1.2f);
+        long exp = (long)(currentStage * (5 + (currentChapter + 1) * 1.2f));
         bool isNewRecord = Database.DBItem.chapters[currentChapter].bestStage < currentStage;
 
         Database.DBItem.player.experience += exp;

@@ -3,10 +3,10 @@
 [System.Serializable]
 public class Stat
 {
-    public delegate void ValueChangeHandler(Stat stat, float prev, float current);
-    public event ValueChangeHandler OnValueChanged;
-    public event ValueChangeHandler OnValueMax;
-    public event ValueChangeHandler OnValueMin;
+    public delegate void ValueChangedHandler(Stat stat, float prev, float current);
+    public event ValueChangedHandler OnValueChanged;
+    public event ValueChangedHandler OnValueMax;
+    public event ValueChangedHandler OnValueMin;
 
     [SerializeField]
     private StatType statType;
@@ -21,11 +21,11 @@ public class Stat
 
     public void CopyData(Stat newStat)
     {
-        statType = newStat.statType;
-        maxValue = newStat.maxValue;
-        minValue = newStat.minValue;
-        defaultValue = newStat.defaultValue;
-        bonusValue = newStat.bonusValue;
+        statType = newStat.StatType;
+        maxValue = newStat.MaxValue;
+        minValue = newStat.MinValue;
+        defaultValue = newStat.DefaultValue;
+        bonusValue = newStat.BonusValue;
     }
 
     public StatType StatType => statType;

@@ -4,11 +4,11 @@
 public class ChapterData : ScriptableObject
 {
     [SerializeField]
-    private ChapterDataTable chaterDataTable;
+    private ChapterDataTable chapterDataTable;
     [SerializeField]
     private StageDataTable stageDataTable;
 
-    public ChapterDataTable ChapterDataTable => chaterDataTable;
+    public ChapterDataTable ChapterDataTable => chapterDataTable;
     public StageDataTable StageDataTable => stageDataTable;
 }
 

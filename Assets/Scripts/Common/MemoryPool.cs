@@ -118,7 +118,7 @@ public class MemoryPool
         }
     }
     
-    public void DeactivateAllPollItems()
+    public void DeactivateAllPoolItems()
     {
         if (poolItemList == null) return;
 

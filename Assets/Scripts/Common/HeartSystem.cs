@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -20,7 +19,7 @@ public class HeartSystem : MonoBehaviour
         private set
         {
             timer = value;
-            onValueChangedTimer.Invoke((currentHeart < maxHeart) ? $"{TimeSpan.FromSeconds(timer):mm\\:ss}" : "FULL");
+            onValueChangedTimer.Invoke((CurrentHeart < maxHeart) ? $"{TimeSpan.FromSeconds(timer):mm\\:ss}" : "FULL");
         }
         get => timer;
     }

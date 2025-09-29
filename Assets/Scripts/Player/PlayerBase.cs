@@ -5,7 +5,7 @@ public class PlayerBase : EntityBase
     [SerializeField]
     private GameController gameController;
     [SerializeField]
-    private FollowTarget targetMask;
+    private FollowTarget targetMark;
     [SerializeField]
     private LevelData levelData;
     [SerializeField]
@@ -28,7 +28,7 @@ public class PlayerBase : EntityBase
 
     private void Update()
     {
-        if (Target == null) targetMask.gameObject.SetActive(false);
+        if (Target == null) targetMark.gameObject.SetActive(false);
 
         SearchTarget();
         Recovery();
@@ -56,9 +56,9 @@ public class PlayerBase : EntityBase
 
         if(Target != null)
         {
-            targetMask.SetTarget(Target.transform);
-            targetMask.transform.position = Target.transform.position;
-            targetMask.gameObject.SetActive(true);
+            targetMark.SetTarget(Target.transform);
+            targetMark.transform.position = Target.transform.position;
+            targetMark.gameObject.SetActive(true);
         }
     }
 

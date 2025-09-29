@@ -11,6 +11,8 @@ public class IntroSceneController : MonoBehaviour
 
     private void Awake()
     {
+        Application.targetFrameRate = 60;
+
         Database.Read();
     }
 

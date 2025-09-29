@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 public enum RewardType { GEM, EXP, ITEM }

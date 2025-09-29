@@ -25,7 +25,7 @@ public class GemCollectEffect : MonoBehaviour
         duration = Random.Range(minDuration, maxDuration);
         point1 = Utils.GetNewPoint(start, Random.Range(0, 360), r);
 
-        StartCoroutine(FadeEffect.Fade(spriteRenderer, 1, 0, percent));
+        StartCoroutine(FadeEffect.Fade(spriteRenderer, 1, 0, duration));
     }
 
     private void Update()

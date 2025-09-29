@@ -18,8 +18,6 @@ public class EnemySpawner : MonoBehaviour
     private GemCollector gemCollector;
     [SerializeField]
     private EntityBase target;
-    [SerializeField]
-    private int enemyCount = 10;
 
     private Vector3 offset = new Vector3(0.5f, 0.5f, 0);
     private List<Vector3> possibleTiles = new List<Vector3>();
@@ -63,7 +61,7 @@ public class EnemySpawner : MonoBehaviour
 
         yield return waitTime;
 
-        enemySpawnTilePool.DeactivateAllPollItems();
+        enemySpawnTilePool.DeactivateAllPoolItems();
 
         for(int i = 0; i < count; ++i)
         {
